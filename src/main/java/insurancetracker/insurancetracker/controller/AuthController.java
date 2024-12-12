@@ -17,6 +17,11 @@ public class AuthController {
     @Autowired
     private UserServices userServices;
 
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
     @GetMapping("/login")
     public String getLoginPage(Model model) {
         model.addAttribute("user", new User());

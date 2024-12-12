@@ -1,61 +1,38 @@
 package insurancetracker.insurancetracker.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity(name = "health_insurances")
 public class HealthInsurance extends Insurance {
     @Column(nullable = false)
     private int age;
     private boolean hasChronicCondition;
     @Column(nullable = false)
-    private String CoverageType;
+    private String coverageType;
     @OneToOne(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private Contract contract;
     @ManyToOne
     private User user;
 
-    public HealthInsurance() {}
     public HealthInsurance(String PolicyHolderName , LocalDate startDate, LocalDate endDate , int age, String coverageType , boolean hasChronicCondition, User user) {
         this.PolicyHolderName = PolicyHolderName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.age = age;
-        this.CoverageType = coverageType;
+        this.coverageType = coverageType;
         this.user = user;
         this.hasChronicCondition = hasChronicCondition;
-    }
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int age) {
-        this.age = age;
-    }
-    public boolean isHasChronicCondition() {
-        return hasChronicCondition;
-    }
-    public void setHasChronicCondition(boolean hasChronicCondition) {
-        this.hasChronicCondition = hasChronicCondition;
-    }
-    public String getCoverageType() {
-        return CoverageType;
-    }
-    public void setCoverageType(String CoverageType) {
-        this.CoverageType = CoverageType;
-    }
-    public Contract getContract() {
-        return contract;
-    }
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
     }
     @Override
     public String getPolicyHolderName(){

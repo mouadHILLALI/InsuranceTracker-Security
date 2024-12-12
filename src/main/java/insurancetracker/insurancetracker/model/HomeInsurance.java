@@ -1,13 +1,22 @@
 package insurancetracker.insurancetracker.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity(name = "home_insurances")
 public class HomeInsurance extends Insurance {
     @Column(nullable = false)
-    private double PropertyValue;
+    private double propertyValue;
     private boolean isHouse;
     private boolean hasSecuritySystem;
     private boolean isInRiskZone;
@@ -15,22 +24,21 @@ public class HomeInsurance extends Insurance {
     private Contract contract;
     @ManyToOne
     private User user;
-    public HomeInsurance() {}
     public HomeInsurance(String PolicyHolderName , LocalDate startDate , LocalDate endDate , double propertyValue , boolean isHouse, boolean hasSecuritySystem, boolean isInRiskZone , User user) {
         this.PolicyHolderName = PolicyHolderName;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.PropertyValue = propertyValue;
+        this.propertyValue = propertyValue;
         this.isHouse = isHouse;
         this.hasSecuritySystem = hasSecuritySystem;
         this.isInRiskZone = isInRiskZone;
         this.user = user;
     }
     public double getPropertyValue() {
-        return PropertyValue;
+        return propertyValue;
     }
     public void setPropertyValue(double PropertyValue) {
-        this.PropertyValue = PropertyValue;
+        this.propertyValue = PropertyValue;
     }
     public boolean getIsHouse() {
         return isHouse;

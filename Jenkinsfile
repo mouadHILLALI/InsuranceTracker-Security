@@ -7,8 +7,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'insurancetracker-security-web'
         DOCKER_CREDENTIALS = 'totogang'
-        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk'
-        PATH = "$JAVA_HOME/bin:$PATH"
     }
     stages {
     stage('Checkout') {

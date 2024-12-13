@@ -1,10 +1,30 @@
 pipeline {
-    agent any
+    agent { label 'master' }
+    tools {
+            maven 'Maven 3.9.9'
+            jdk 'Java 21.0.4.1'
+        }
     environment {
-        DOCKER_IMAGE = 'mouad22/insurance_t:latest'
+        DOCKER_IMAGE = 'insurancetracker-security-web'
         DOCKER_CREDENTIALS = 'totogang'
     }
     stages {
+    stage('Checkout') {
+        steps {
+            echo "Cloning repository..."
+            checkout([$class: 'GitSCM',
+                branches: [[name: '*/master']],
+                userRemoteConfigs: [[url: 'https://github.com/mouadHILLALI/InsuranceTracker-Security.git']]
+            ])
+        }
+    }
+    stage('Verify Tools') {
+        steps {
+            echo "Verifying Maven and Java installations..."
+            sh 'mvn -version'
+            sh 'java -version'
+        }
+    }
         stage('Build') {
             steps {
                 echo "Building the application..."
@@ -15,6 +35,12 @@ pipeline {
             steps {
                 echo "Running tests..."
                 sh 'mvn test'
+            }
+        }
+        stage('Verify Docker') {
+            steps {
+                echo "Checking Docker version..."
+                sh 'docker --version'
             }
         }
         stage('Deliver') {

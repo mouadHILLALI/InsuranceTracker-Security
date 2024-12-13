@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
             maven 'maven 3.9.9'
-            jdk 'Java 21'
+            jdk 'java 21'
         }
     environment {
         DOCKER_IMAGE = 'insurancetracker-security-web'

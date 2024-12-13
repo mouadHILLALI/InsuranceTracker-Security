@@ -27,7 +27,13 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
-
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -49,3 +55,5 @@ networks:
 volumes:
   pgdata:
   pgadmin-data:
+  jenkins_home:
+

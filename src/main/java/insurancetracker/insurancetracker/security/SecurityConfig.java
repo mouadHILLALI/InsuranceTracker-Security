@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private final UserServicesImpl userService;
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -37,8 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((request, response, authentication) -> {
                     String username = authentication.getName();
                     String redirectUrl = determineRedirectUrl(authentication);
-                    HttpServletResponse httpResponse = (HttpServletResponse) response;
-                    httpResponse.sendRedirect(redirectUrl);
+//                    HttpServletResponse httpResponse = (HttpServletResponse) response;
+//                    httpResponse.sendRedirect(redirectUrl);
                 })
                 .failureUrl("/Auth/login?error=true")
                 .and()

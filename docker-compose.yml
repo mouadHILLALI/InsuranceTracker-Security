@@ -28,7 +28,9 @@ services:
     networks:
       - app-network
   jenkins:
-    image: jenkins/jenkins:lts-jdk11
+    image: jenkins/jenkins:lts
+    environment:
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk
     ports:
       - "8081:8080"
       - "50000:50000"

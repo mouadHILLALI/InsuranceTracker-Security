@@ -7,6 +7,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'insurancetracker-security-web'
         DOCKER_CREDENTIALS = 'totogang'
+        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk'
     }
     stages {
     stage('Checkout') {
@@ -19,11 +20,12 @@ pipeline {
         }
     }
     stage('Verify Tools') {
-        steps {
-            echo "Verifying Maven and Java installations..."
-            sh 'mvn -version'
-            sh 'java -version'
-        }
+         steps {
+                    echo "Verifying Maven and Java installations..."
+                    sh 'echo $JAVA_HOME'
+                    sh 'mvn -version'
+                    sh 'java -version'
+         }
     }
         stage('Build') {
             steps {

@@ -18,12 +18,6 @@ pipeline {
             ])
         }
     }
-    stage('Verify Tools') {
-         steps {
-                    echo "Verifying Maven and Java installations..."
-                    sh 'mvn -version'
-                    sh 'java -version'
-         }
     }
         stage('Build') {
             steps {

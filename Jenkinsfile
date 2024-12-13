@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'mouad22/insuranceTracker:latest'
-        DOCKER_CREDENTIALS = 'docker-hub-credentials-id'
+        DOCKER_IMAGE = 'mouad22/insurance_t:latest'
+        DOCKER_CREDENTIALS = 'totogang'
     }
     stages {
         stage('Build') {
@@ -21,12 +21,12 @@ pipeline {
             steps {
                 echo "Building Docker image..."
                 sh '''
-                docker build -t $DOCKER_IMAGE .
+                    docker build -t $DOCKER_IMAGE .
                 '''
                 echo "Pushing Docker image to Docker Hub..."
-                withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS", url: "https://index.docker.io/v1/"]) {
+                withDockerRegistry([credentialsId: DOCKER_CREDENTIALS, url: "https://index.docker.io/v1/"]) {
                     sh '''
-                    docker push $DOCKER_IMAGE
+                        docker push $DOCKER_IMAGE
                     '''
                 }
             }

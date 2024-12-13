@@ -23,7 +23,6 @@ pipeline {
     stage('Verify Tools') {
          steps {
                     echo "Verifying Maven and Java installations..."
-                    sh 'echo $JAVA_HOME'
                     sh 'mvn -version'
                     sh 'java -version'
          }

@@ -1,7 +1,7 @@
 package insurancetracker.insurancetracker.controller;
 
 import insurancetracker.insurancetracker.model.User;
-import insurancetracker.insurancetracker.service.UserService.UserServices;
+import insurancetracker.insurancetracker.service.UserService.UserServicesImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private UserServices userServices;
+    private UserServicesImpl userServices;
 
     @GetMapping("/")
     public String index(){
@@ -51,26 +51,6 @@ public class AuthController {
             return "Auth/register";
         }
     }
-
-    @PostMapping("/login")
-    public String loginUser(@ModelAttribute User user, HttpSession session, Model model) {
-        try {
-            User loggedInUser = userServices.Login(user.getEmail(), user.getPassword());
-            if (loggedInUser != null) {
-                session.setAttribute("user", loggedInUser);
-                model.addAttribute("user", loggedInUser);
-                return "Client/client";
-            } else {
-                model.addAttribute("error", "Invalid credentials. Please try again.");
-                return "Auth/login";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "An error occurred during login.");
-            return "Auth/login";
-        }
-    }
-
     @GetMapping("/logout")
     public String getLogout(HttpServletRequest request) {
         try {

@@ -1,45 +1,34 @@
 package insurancetracker.insurancetracker.service.UserService;
 
 import insurancetracker.insurancetracker.model.Contract;
-import insurancetracker.insurancetracker.model.Insurance;
 import insurancetracker.insurancetracker.model.User;
 import insurancetracker.insurancetracker.repository.ContractRepository;
 import insurancetracker.insurancetracker.repository.InsuranceRepository;
 import insurancetracker.insurancetracker.repository.UserRepository;
 import insurancetracker.insurancetracker.utils.PasswordUtils;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class UserServices {
+@RequiredArgsConstructor
+public class UserServicesImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     @Autowired
     private InsuranceRepository insuranceRepository;
     @Autowired
     private ContractRepository contractRepository;
-    @Autowired
-    private PasswordUtils passwordUtils;
 
+    private final PasswordUtils passwordUtils;
 
-    public User Login(String email, String password) {
-        try {
-            String hashedPass = PasswordUtils.hashPassword(password);
-            User user = userRepository.findByEmail(email);
-            if (user.getPassword().equals(hashedPass)) {
-                return user;
-            }
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     public User Register(User user) {
         try {
             user.setPassword(PasswordUtils.hashPassword(user.getPassword()));
@@ -92,4 +81,25 @@ public class UserServices {
         }
         return false;
    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("Authentication attempt for email: " + email);
+
+        insurancetracker.insurancetracker.model.User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException(email);
+        }
+        System.out.println("Authentication Details:");
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Stored Password: " + user.getPassword());
+        System.out.println("Roles: " + user.getRole());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority(user.getRole()))
+        );
+
+    }
 }
